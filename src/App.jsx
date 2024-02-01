@@ -3,11 +3,14 @@ import { ChakraProvider, Box, theme } from "@chakra-ui/react";
 import "./App.css";
 import Header from "./layout/Header";
 import Chat from "./components/Chat";
+import { InvitationCodeForm } from "./components/InvitationCodeForm";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AppContextProvider, useAppContext } from "./context/appContext";
 
+
+
 function App() {
-  const { username, setUsername, routeHash } = useAppContext();
+  const { invitationCode, setInvitationCode, routeHash } = useAppContext();
 
   if (routeHash) {
     if (routeHash.endsWith("&type=recovery")) {
@@ -32,6 +35,15 @@ function App() {
             <Routes>
               <Route
                 path="/"
+                element={
+                  <>
+                    <Header />
+                    <InvitationCodeForm />
+                  </>
+                }
+              />
+              <Route
+                path="/chat"
                 element={
                   <>
                     <Header />

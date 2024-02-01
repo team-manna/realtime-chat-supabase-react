@@ -7,11 +7,6 @@ import { truncateText } from "../utils";
 import { css } from "@emotion/css";
 
 export default function Message({ message, isYou }) {
-  const countyCode =
-    message.country && message.country !== "undefined"
-      ? message.country.toLowerCase()
-      : "";
-
   const timeTextStyle = css`
     position: relative;
     font-size: 12px;

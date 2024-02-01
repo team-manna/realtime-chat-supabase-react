@@ -9,6 +9,8 @@ import { css } from "@emotion/react";
 export default function Chat() {
   const [height, setHeight] = useState(window.innerHeight);
   const {
+    roomId,
+    invitationCode,
     scrollRef,
     onScroll,
     scrollToBottom,

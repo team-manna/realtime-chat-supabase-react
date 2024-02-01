@@ -5,7 +5,7 @@ const AppContext = createContext({});
 
 const AppContextProvider = ({ children }) => {
   let myChannel = null;
-  const [username, setUsername] = useState("");
+  const [invitationCode, setInvitationCode] = useState("");
   const [session, setSession] = useState(null);
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState("");
@@ -15,7 +15,7 @@ const AppContextProvider = ({ children }) => {
   const [newIncomingMessageTrigger, setNewIncomingMessageTrigger] =
     useState(null);
   const [unviewedMessageCount, setUnviewedMessageCount] = useState(0);
-  const [countryCode, setCountryCode] = useState("");
+  const [roomId, setRoomId] = useState("");
   const [isInitialLoad, setIsInitialLoad] = useState(false);
 
   useEffect(() => {
@@ -29,11 +29,11 @@ const AppContextProvider = ({ children }) => {
   const getLocation = async () => {
     try {
       const res = await fetch("https://api.db-ip.com/v2/free/self");
-      const { countryCode, error } = await res.json();
+      const { room_id, error } = await res.json();
       if (error) throw new Error(error);
 
-      setCountryCode(countryCode);
-      localStorage.setItem("countryCode", countryCode);
+      setRoomId(room_id);
+      localStorage.setItem("room_id", room_id);
     } catch (error) {
       console.error(
         `error getting location from api.db-ip.com:`,
@@ -47,18 +47,6 @@ const AppContextProvider = ({ children }) => {
   };
   const initializeUser = (session) => {
     setSession(session);
-    // const {
-    //   data: { session },
-    // } = await supabase.auth.getSession();
-
-    let username;
-    if (session) {
-      username = session.user.user_metadata.user_name;
-    } else {
-      username = localStorage.getItem("username") || randomUsername();
-    }
-    setUsername(username);
-    localStorage.setItem("username", username);
   };
 
   useEffect(() => {
@@ -68,9 +56,9 @@ const AppContextProvider = ({ children }) => {
 
     getMessagesAndSubscribe();
 
-    const storedCountryCode = localStorage.getItem("countryCode");
-    if (storedCountryCode && storedCountryCode !== "undefined")
-      setCountryCode(storedCountryCode);
+    const storedRoomId = localStorage.getItem("room_id");
+    if (storedRoomId && storedRoomId !== "undefined")
+      setRoomId(storedRoomId);
     else getLocation();
 
     const {
@@ -99,7 +87,7 @@ const AppContextProvider = ({ children }) => {
   useEffect(() => {
     if (!newIncomingMessageTrigger) return;
 
-    if (newIncomingMessageTrigger.username === username) {
+    if (newIncomingMessageTrigger.invitationCode === invitationCode) {
       scrollToBottom();
     } else {
       setUnviewedMessageCount((prevCount) => prevCount + 1);
@@ -108,7 +96,7 @@ const AppContextProvider = ({ children }) => {
 
   const handleNewMessage = (payload) => {
     setMessages((prevMessages) => [payload.new, ...prevMessages]);
-    //* needed to trigger react state because I need access to the username state
+    //* needed to trigger react state because I need access to the invitationCode state
     setNewIncomingMessageTrigger(payload.new);
   };
 
@@ -173,9 +161,10 @@ const AppContextProvider = ({ children }) => {
       // console.log("messages.length :>> ", messages.length);
       const { data, error } = await supabase
         .from("messages")
-        .select()
+        .select('invitation_codes( invitation_code, room_id, username )')
         .range(messages.length, messages.length + 49)
         .order("id", { ascending: false });
+
       if (error) {
         setError(error.message);
         return;
@@ -184,6 +173,28 @@ const AppContextProvider = ({ children }) => {
       setMessages((prevMessages) => [...prevMessages, ...data]);
     }
   };
+
+  // const { data, error } = await supabase
+  //   .from('invitation_codes')
+  //   .select('invitation_code, rooms(room_id, room_name)')
+  //   .join('rooms', {
+  //     from: 'invitation_codes.invitation_code',
+  //     to: 'rooms.room_id'
+  //   });
+
+  // if (error) {
+  //   console.error('Error fetching invitation codes and rooms:', error.message);
+  //   return;
+  // }
+
+  // const invitationCodesAndRooms = data.map((row) => ({
+  //   invitationCode: row.invitation_code,
+  //   room: {
+  //     roomId: row.rooms.room_id,
+  //     roomName: row.rooms.room_name
+  //   }
+  // }));
+  // console.log('Invitation codes and rooms:', invitationCodesAndRooms);
 
   const scrollToBottom = () => {
     if (!scrollRef.current) return;
@@ -198,15 +209,16 @@ const AppContextProvider = ({ children }) => {
         loadingInitial,
         error,
         getMessagesAndSubscribe,
-        username,
-        setUsername,
+        invitationCode,
+        setInvitationCode,
+        roomId,
+        setRoomId,
         randomUsername,
         routeHash,
         scrollRef,
         onScroll,
         scrollToBottom,
         isOnBottom,
-        country: countryCode,
         unviewedMessageCount,
         session,
       }}
