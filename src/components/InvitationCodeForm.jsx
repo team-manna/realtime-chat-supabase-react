@@ -8,7 +8,7 @@ import supabase from "../supabaseClient";
 
 export const InvitationCodeForm = (props) => {
     const [input, setInput] = useState("");
-    const { invitationCode, setInvitationCode, roomId, setRoomId } = useAppContext();
+    const { invitationCode, setInvitationCode, room, setRoom } = useAppContext();
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
@@ -33,9 +33,9 @@ export const InvitationCodeForm = (props) => {
         }
         else {
             console.log(`디버그: ${input}`)
-            console.log(`invitation code 디버그: ${data}`)
+            console.log(`invitation code 디버그: ${JSON.stringify(data)}`)
             // console.log(`set invitation code ${input} ${[...data]}`);
-            setRoomId(data.room_id);
+            setRoom(data);
             setInvitationCode(input);
         }
     };
@@ -53,7 +53,7 @@ export const InvitationCodeForm = (props) => {
         width: 300px;
         height: 500px;
         `}>
-            <h1>{invitationCode} {roomId}</h1>
+            <h1>{invitationCode} {room?.room_id}</h1>
             <form onSubmit={handleSubmit}>
                 <input type="text" value={input} onChange={handleInputChange} />
                 <button type="submit">Submit</button>

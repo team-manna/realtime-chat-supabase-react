@@ -9,7 +9,7 @@ import { css } from "@emotion/react";
 export default function Chat() {
   const [height, setHeight] = useState(window.innerHeight);
   const {
-    roomId,
+    room,
     invitationCode,
     scrollRef,
     onScroll,
@@ -25,7 +25,7 @@ export default function Chat() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  
+
   const containerStyle = css`
     max-width: 393px;
     padding-bottom: 26px;
@@ -58,6 +58,12 @@ export default function Chat() {
 
   return (
     <Container maxW="393px" pb="26px">
+      <div>
+        <p>room: {room.room_id}</p>
+        <p>startedAt: {room.started_at}</p>
+        <p>endedAt: {room.ended_at}</p>
+        <p>invitationCode: {invitationCode}</p>
+      </div>
       <Box
         bg="white"
         p="5"
@@ -97,7 +103,7 @@ export default function Chat() {
             )}
           </div>
         )}
-      <MessageForm />
+        <MessageForm />
       </Box>
     </Container>
   );
