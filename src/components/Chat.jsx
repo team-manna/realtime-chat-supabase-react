@@ -59,7 +59,7 @@ export default function Chat() {
   return (
     <Container maxW="393px" pb="26px">
       <div>
-        <p>room: {room.room_id}</p>
+        <p>room: {room.id}</p>
         <p>startedAt: {room.started_at}</p>
         <p>endedAt: {room.ended_at}</p>
         <p>invitationCode: {invitationCode}</p>

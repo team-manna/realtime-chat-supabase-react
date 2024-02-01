@@ -20,7 +20,7 @@ export const InvitationCodeForm = (props) => {
 
         const { data, error } = await supabase
             .from("invitation_codes")
-            .select("room_id")
+            .select("rooms(id, started_at, ended_at)")
             .eq("invitation_code", input)
             .maybeSingle();
 
@@ -32,10 +32,9 @@ export const InvitationCodeForm = (props) => {
             console.log("빈 값");
         }
         else {
-            console.log(`디버그: ${input}`)
-            console.log(`invitation code 디버그: ${JSON.stringify(data)}`)
-            // console.log(`set invitation code ${input} ${[...data]}`);
-            setRoom(data);
+            console.log(`디버그: ${input}`);
+            console.log(`invitation code 디버그: ${JSON.stringify(data)}`);
+            setRoom(data.rooms);
             setInvitationCode(input);
         }
     };
@@ -53,7 +52,7 @@ export const InvitationCodeForm = (props) => {
         width: 300px;
         height: 500px;
         `}>
-            <h1>{invitationCode} {room?.room_id}</h1>
+            <h1>{invitationCode} {room?.id}</h1>
             <form onSubmit={handleSubmit}>
                 <input type="text" value={input} onChange={handleInputChange} />
                 <button type="submit">Submit</button>
