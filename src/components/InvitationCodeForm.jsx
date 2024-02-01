@@ -20,16 +20,23 @@ export const InvitationCodeForm = (props) => {
 
         const { data, error } = await supabase
             .from("invitation_codes")
-            .select();
+            .select("room_id")
+            .eq("invitation_code", input)
+            .maybeSingle();
 
-        console.log(data[0]);
 
         if (error) {
             console.error(error);
-        } else {
-            console.log(`set invitation code ${input} ${[...data]}`);
+        }
+        else if (!data) {
+            console.log("빈 값");
+        }
+        else {
+            console.log(`디버그: ${input}`)
+            console.log(`invitation code 디버그: ${data}`)
+            // console.log(`set invitation code ${input} ${[...data]}`);
+            setRoomId(data.room_id);
             setInvitationCode(input);
-            setRoomId(data);
         }
     };
 
