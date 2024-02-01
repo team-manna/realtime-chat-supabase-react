@@ -35,7 +35,7 @@ export default function Messages() {
     );
 
   return reversed.map((message) => {
-    const isYou = message.invitationCode === invitationCode;
+    const isYou = message.invitation_code === invitationCode;
     return <Message key={message.id} message={message} isYou={isYou} />;
   });
 }
