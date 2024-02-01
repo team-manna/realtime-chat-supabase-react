@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import { useAppContext } from "../context/appContext";
 import Messages from "./Messages";
 import { BsChevronDoubleDown } from "react-icons/bs";
+import MessageForm from "./MessageForm";
+import { css } from "@emotion/react";
 
 export default function Chat() {
-  const [height, setHeight] = useState(window.innerHeight - 205);
+  const [height, setHeight] = useState(window.innerHeight);
   const {
     scrollRef,
     onScroll,
@@ -13,19 +15,52 @@ export default function Chat() {
     isOnBottom,
     unviewedMessageCount,
   } = useAppContext();
+
   useEffect(() => {
-    window.addEventListener("resize", () => {
-      setHeight(window.innerHeight - 205);
-    });
+    const handleResize = () => {
+      setHeight(window.innerHeight);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+  
+  const containerStyle = css`
+    max-width: 393px;
+    padding-bottom: 26px;
+  `;
+
+  const boxStyle = css`
+    background: white;
+    padding: 5;
+    overflow: auto;
+    border-radius: 41px;
+    height: ${height}px;
+  `;
+
+  const badgeStyle = css`
+    margin-left: 1;
+    font-size: 0.8em;
+    color-scheme: green;
+    display: flex;
+    border-radius: 7px;
+    padding: 3px 5px;
+    align-items: center;
+  `;
+
+  const stickyDivStyle = css`
+    position: sticky;
+    bottom: 8px;
+    float: right;
+    cursor: pointer;
+  `;
 
   return (
-    <Container maxW="600px" pb="20px">
+    <Container maxW="393px" pb="26px">
       <Box
         bg="white"
         p="5"
         overflow="auto"
-        borderRadius="10px"
+        borderRadius="41px"
         height={height}
         onScroll={onScroll}
         ref={scrollRef}
@@ -60,6 +95,7 @@ export default function Chat() {
             )}
           </div>
         )}
+      <MessageForm />
       </Box>
     </Container>
   );
