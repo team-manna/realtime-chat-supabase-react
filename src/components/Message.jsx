@@ -6,7 +6,7 @@ import { truncateText } from "../utils";
 
 import { css } from "@emotion/css";
 
-export default function Message({ message, isYou }) {
+export default function Message({ message, isYou, displayTime }) {
   const timeTextStyle = css`
     position: relative;
     font-size: 12px;
@@ -33,7 +33,7 @@ export default function Message({ message, isYou }) {
   const balloonStyle = css`
     position: relative;
     border-radius: 22px;
-    background-color: ${isYou ? "#f6f6f6" : "#fce1d2"};
+    background-color: ${isYou ? "#8C7E71" : "#F6F6F6"};
     height: auto;
     overflow: hidden;
     display: flex;
@@ -42,7 +42,8 @@ export default function Message({ message, isYou }) {
     margin-top: 10px;
     align-items: ${isYou ? "flex-end" : "flex-start"};
   `;
-
+  console.log(displayTime, 123);
+  // const realtime = dayjs(message.timestamp).format("HH:MM");
   return (
     <div className={containerStyle}>
       <div className={balloonStyle}>
@@ -57,6 +58,7 @@ export default function Message({ message, isYou }) {
         </div>
         <div>{truncateText(message.text)}</div>
       </div>
+
       <div className={timeTextStyle}>
         {dayjs(message.timestamp).format("HH:MM")}
       </div>

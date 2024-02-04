@@ -1,4 +1,4 @@
-import { Button, Grid, GridItem, Image } from "@chakra-ui/react";
+import { Box, Button, Grid, GridItem, Image } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa";
 import supabase from "../supabaseClient";
 
@@ -9,60 +9,39 @@ export default function Header() {
 
   return (
     <Grid
-      templateColumns="max-content 1fr min-content"
-      justifyItems="center"
-      alignItems="center"
-      bg="white"
+      // templateColumns="max-content 1fr min-content"
+      // justifyItems="center"
+      // alignItems="center"
+      display="flex"
+      flexDir="row"
+      justifyContent="space-between"
+      bg="#F7F6F5"
       position="sticky"
       top="0"
       zIndex="10"
-      borderBottom="20px solid #edf2f7"
+      ml="5"
+      mr="5"
+      mt="5"
+      mb="5"
     >
-      <GridItem justifySelf="start" m="2">
-        <Image src="/logo.png" height="30px" ml="2" />
+      <GridItem
+        justifySelf="start"
+        m="2"
+        flexDir="row"
+        display="flex"
+        alignItems="center"
+      >
+        <Image src="/female.svg" height="50px" ml="2" />
+        <Box display="flex" flexDir="column" ml="15">
+          몽글
+          <Button variant="link" size="xs">
+            프로필 보기 <Image src="leftArrow.svg" ml="2" />
+          </Button>
+        </Box>
       </GridItem>
-      {session ? (
-        <>
-          <GridItem justifySelf="end" alignSelf="center" mr="4">
-            Welcome <strong>{username}</strong>
-          </GridItem>
-          <Button
-            marginRight="4"
-            size="sm"
-            variant="link"
-            onClick={() => {
-              const { error } = supabase.auth.signOut();
-              if (error) return console.error("error signOut", error);
-              const username = randomUsername();
-              setUsername(username);
-              localStorage.setItem("username", username);
-            }}
-          >
-            Log out
-          </Button>
-        </>
-      ) : (
-        <>
-          <GridItem justifySelf="end" alignSelf="end">
-            <NameForm username={username} setUsername={setUsername} />
-          </GridItem>
-          <Button
-            size="sm"
-            marginRight="2"
-            colorScheme="teal"
-            rightIcon={<FaGithub />}
-            variant="outline"
-            onClick={() =>
-              supabase.auth.signInWithOAuth({
-                provider: "github",
-                redirectTo: window.location.origin,
-              })
-            }
-          >
-            Login
-          </Button>
-        </>
-      )}
+      <GridItem justifySelf="end" alignSelf="center" mr="4">
+        <Image src="guide.svg" />
+      </GridItem>
     </Grid>
   );
 }

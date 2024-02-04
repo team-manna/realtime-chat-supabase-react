@@ -6,8 +6,8 @@ import {
   useToast,
   Box,
   Container,
+  Image,
 } from "@chakra-ui/react";
-import { BiSend } from "react-icons/bi";
 import { useAppContext } from "../context/appContext";
 import supabase from "../supabaseClient";
 
@@ -53,30 +53,34 @@ export default function MessageForm() {
   };
 
   return (
-    <Box py="10px" pt="15px" bg="gray.100">
-      <Container maxW="600px">
+    <Box bg="#F6F6F6" borderRadius="35px" padding="10px" paddingRight={0}>
+      <Container>
         <form onSubmit={handleSubmit} autoComplete="off">
           <Stack direction="row">
             <Input
               name="message"
-              placeholder="Enter a message"
+              placeholder="메시지 보내기"
+              style={{ fontSize: 14, fontWeight: 200 }}
               onChange={(e) => setMessage(e.target.value)}
               value={message}
-              bg="white"
+              bg="#F6F6F6"
               border="none"
               autoFocus
               maxLength="500"
+              variant="unstyled"
             />
             <IconButton
-              // variant="outline"
-              colorScheme="teal"
-              aria-label="Send"
-              fontSize="20px"
-              icon={<BiSend />}
+              // colorScheme="white"
+              isRound={true}
+              padding="15px"
               type="submit"
               disabled={!message}
               isLoading={isSending}
-            />
+              size="md"
+              backgroundColor="White"
+            >
+              <Image src="send.svg" />
+            </IconButton>
           </Stack>
         </form>
       </Container>

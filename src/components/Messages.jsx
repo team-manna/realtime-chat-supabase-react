@@ -3,9 +3,15 @@ import { useAppContext } from "../context/appContext";
 import Message from "./Message";
 
 export default function Messages() {
-  const { invitationCode, loadingInitial, error, getMessagesAndSubscribe, messages } =
-    useAppContext();
+  const {
+    invitationCode,
+    loadingInitial,
+    error,
+    getMessagesAndSubscribe,
+    messages,
+  } = useAppContext();
   const reversed = [...messages].reverse();
+
   if (loadingInitial)
     return (
       <Box textAlign="center">
@@ -33,9 +39,19 @@ export default function Messages() {
         No messages 😞
       </Box>
     );
-
-  return reversed.map((message) => {
+  return reversed.map((message, i) => {
+    // let prevTime = null;
     const isYou = message.invitation_code === invitationCode;
-    return <Message key={message.id} message={message} isYou={isYou} />;
+    // const currentTime = message.timestamp;
+    // const displayTime = message.timestamp !== reversed[i - 1].timestamp;
+    // console.log(displayTime, "displayTime");
+    return (
+      <Message
+        key={message.id}
+        message={message}
+        isYou={isYou}
+        // displayTime={displayTime}
+      />
+    );
   });
 }

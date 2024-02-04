@@ -7,10 +7,15 @@ import { InvitationCodeForm } from "./components/InvitationCodeForm";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AppContextProvider, useAppContext } from "./context/appContext";
 
-
-
 function App() {
   const { invitationCode, setInvitationCode, routeHash } = useAppContext();
+
+  const globalStyle = {
+    maxWidth: "400px",
+    marginLeft: "auto",
+    marginRight: "auto",
+    backgroundColor: "#F7F6F5",
+  };
 
   if (routeHash) {
     if (routeHash.endsWith("&type=recovery")) {
@@ -29,7 +34,7 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <AppContextProvider>
-        <Box bg="#F7F6F5">
+        <Box bg="#F7F6F5" style={globalStyle}>
           {/* <ColorModeSwitcher justifySelf="flex-end" /> */}
           <Router>
             <Routes>

@@ -7,7 +7,7 @@ import MessageForm from "./MessageForm";
 import { css } from "@emotion/react";
 
 export default function Chat() {
-  const [height, setHeight] = useState(window.innerHeight);
+  const [height, setHeight] = useState(window.innerHeight - 100);
   const {
     roomId,
     invitationCode,
@@ -25,7 +25,7 @@ export default function Chat() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  
+
   const containerStyle = css`
     max-width: 393px;
     padding-bottom: 26px;
@@ -97,7 +97,7 @@ export default function Chat() {
             )}
           </div>
         )}
-      <MessageForm />
+        <MessageForm />
       </Box>
     </Container>
   );
