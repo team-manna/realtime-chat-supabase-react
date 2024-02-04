@@ -15,7 +15,7 @@ const AppContextProvider = ({ children }) => {
   const [newIncomingMessageTrigger, setNewIncomingMessageTrigger] =
     useState(null);
   const [unviewedMessageCount, setUnviewedMessageCount] = useState(0);
-  const [room, setRoom] = useState(null);
+  const [roomId, setRoomId] = useState("");
   const [isInitialLoad, setIsInitialLoad] = useState(false);
 
   useEffect(() => {
@@ -29,11 +29,11 @@ const AppContextProvider = ({ children }) => {
   const getLocation = async () => {
     try {
       const res = await fetch("https://api.db-ip.com/v2/free/self");
-      const { room, error } = await res.json();
+      const { room_id, error } = await res.json();
       if (error) throw new Error(error);
 
-      setRoom(room);
-      localStorage.setItem("room", room);
+      setRoomId(room_id);
+      localStorage.setItem("room_id", room_id);
     } catch (error) {
       console.error(
         `error getting location from api.db-ip.com:`,
@@ -56,9 +56,10 @@ const AppContextProvider = ({ children }) => {
 
     getMessagesAndSubscribe();
 
-    const storedRoomId = localStorage.getItem("room");
+    const storedRoomId = localStorage.getItem("room_id");
     if (storedRoomId && storedRoomId !== "undefined")
-      setRoom(storedRoomId);
+      setRoomId(storedRoomId);
+    else getLocation();
 
     const {
       data: { subscription: authSubscription },
@@ -173,6 +174,28 @@ const AppContextProvider = ({ children }) => {
     }
   };
 
+  // const { data, error } = await supabase
+  //   .from('invitation_codes')
+  //   .select('invitation_code, rooms(room_id, room_name)')
+  //   .join('rooms', {
+  //     from: 'invitation_codes.invitation_code',
+  //     to: 'rooms.room_id'
+  //   });
+
+  // if (error) {
+  //   console.error('Error fetching invitation codes and rooms:', error.message);
+  //   return;
+  // }
+
+  // const invitationCodesAndRooms = data.map((row) => ({
+  //   invitationCode: row.invitation_code,
+  //   room: {
+  //     roomId: row.rooms.room_id,
+  //     roomName: row.rooms.room_name
+  //   }
+  // }));
+  // console.log('Invitation codes and rooms:', invitationCodesAndRooms);
+
   const scrollToBottom = () => {
     if (!scrollRef.current) return;
 
@@ -188,8 +211,8 @@ const AppContextProvider = ({ children }) => {
         getMessagesAndSubscribe,
         invitationCode,
         setInvitationCode,
-        room,
-        setRoom,
+        roomId,
+        setRoomId,
         randomUsername,
         routeHash,
         scrollRef,

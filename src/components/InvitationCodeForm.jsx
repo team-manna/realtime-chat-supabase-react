@@ -8,7 +8,7 @@ import supabase from "../supabaseClient";
 
 export const InvitationCodeForm = (props) => {
     const [input, setInput] = useState("");
-    const { invitationCode, setInvitationCode, room, setRoom } = useAppContext();
+    const { invitationCode, setInvitationCode, roomId, setRoomId } = useAppContext();
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
@@ -20,7 +20,7 @@ export const InvitationCodeForm = (props) => {
 
         const { data, error } = await supabase
             .from("invitation_codes")
-            .select("rooms(id, started_at, ended_at)")
+            .select("room_id")
             .eq("invitation_code", input)
             .maybeSingle();
 
@@ -32,9 +32,10 @@ export const InvitationCodeForm = (props) => {
             console.log("빈 값");
         }
         else {
-            console.log(`디버그: ${input}`);
-            console.log(`invitation code 디버그: ${JSON.stringify(data)}`);
-            setRoom(data.rooms);
+            console.log(`디버그: ${input}`)
+            console.log(`invitation code 디버그: ${data}`)
+            // console.log(`set invitation code ${input} ${[...data]}`);
+            setRoomId(data.room_id);
             setInvitationCode(input);
         }
     };
@@ -52,7 +53,7 @@ export const InvitationCodeForm = (props) => {
         width: 300px;
         height: 500px;
         `}>
-            <h1>{invitationCode} {room?.id}</h1>
+            <h1>{invitationCode} {roomId}</h1>
             <form onSubmit={handleSubmit}>
                 <input type="text" value={input} onChange={handleInputChange} />
                 <button type="submit">Submit</button>

@@ -9,7 +9,7 @@ import { css } from "@emotion/react";
 export default function Chat() {
   const [height, setHeight] = useState(window.innerHeight - 100);
   const {
-    room,
+    roomId,
     invitationCode,
     scrollRef,
     onScroll,
@@ -58,12 +58,6 @@ export default function Chat() {
 
   return (
     <Container maxW="393px" pb="26px">
-      <div>
-        <p>room: {room.id}</p>
-        <p>startedAt: {room.started_at}</p>
-        <p>endedAt: {room.ended_at}</p>
-        <p>invitationCode: {invitationCode}</p>
-      </div>
       <Box
         bg="white"
         p="5"
