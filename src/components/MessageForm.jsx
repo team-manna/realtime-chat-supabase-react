@@ -13,7 +13,7 @@ import supabase from "../supabaseClient";
 import Send from "../../public/send.svg";
 
 export default function MessageForm() {
-  const { invitationCode, session } = useAppContext();
+  const { invitationCode, session, room } = useAppContext();
   const [message, setMessage] = useState("");
   const toast = useToast();
   const [isSending, setIsSending] = useState(false);
@@ -31,6 +31,7 @@ export default function MessageForm() {
           text: message,
           invitation_code: invitationCode,
           is_authenticated: session ? true : false,
+          room_id: room.id,
         },
       ]);
 

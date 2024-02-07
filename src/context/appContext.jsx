@@ -54,8 +54,6 @@ const AppContextProvider = ({ children }) => {
       initializeUser(session);
     });
 
-    getMessagesAndSubscribe();
-
     const storedRoomId = localStorage.getItem("room");
     if (storedRoomId && storedRoomId !== "undefined")
       setRoom(storedRoomId);
@@ -83,6 +81,12 @@ const AppContextProvider = ({ children }) => {
     };
   }, []);
 
+  // 방이 바뀔 떄마다 새로운 메시지를 가져오고 구독한다.
+  useEffect(() => {
+    setMessages([]);
+    getMessagesAndSubscribe(room);
+  }, [room]);
+
   useEffect(() => {
     if (!newIncomingMessageTrigger) return;
 
@@ -94,17 +98,18 @@ const AppContextProvider = ({ children }) => {
   }, [newIncomingMessageTrigger]);
 
   const handleNewMessage = (payload) => {
-    setMessages((prevMessages) => [payload.new, ...prevMessages]);
-    //* needed to trigger react state because I need access to the invitationCode state
-    setNewIncomingMessageTrigger(payload.new);
+      setMessages((prevMessages) => [payload.new, ...prevMessages]);
+      //* needed to trigger react state because I need access to the invitationCode state
+      setNewIncomingMessageTrigger(payload.new);
   };
 
-  const getInitialMessages = async () => {
+  const getInitialMessages = async (room) => {
     if (messages.length) return;
 
     const { data, error } = await supabase
       .from("messages")
       .select()
+      .filter("room_id", "eq", room.id)
       .range(0, 49)
       .order("id", { ascending: false });
     // console.log(`data`, data);
@@ -120,10 +125,10 @@ const AppContextProvider = ({ children }) => {
     // scrollToBottom(); // not sure why this stopped working, meanwhile using useEffect that's listening to messages and isInitialLoad state.
   };
 
-  const getMessagesAndSubscribe = async () => {
+  const getMessagesAndSubscribe = async (room) => {
     setError("");
 
-    await getInitialMessages();
+    await getInitialMessages(room);
 
     if (!myChannel) {
       // mySubscription = supabase
@@ -132,12 +137,11 @@ const AppContextProvider = ({ children }) => {
       //   handleNewMessage(payload);
       // })
       // .subscribe();
-
       myChannel = supabase
         .channel("custom-all-channel")
         .on(
           "postgres_changes",
-          { event: "*", schema: "public", table: "messages" },
+          { event: "*", schema: "public", table: "messages", filter: `room_id=eq.${room.id}` },
           (payload) => {
             handleNewMessage(payload);
           }
@@ -161,6 +165,7 @@ const AppContextProvider = ({ children }) => {
       const { data, error } = await supabase
         .from("messages")
         .select('invitation_codes( invitation_code, room_id, username )')
+        .filter("room_id", "eq", room)
         .range(messages.length, messages.length + 49)
         .order("id", { ascending: false });
 
