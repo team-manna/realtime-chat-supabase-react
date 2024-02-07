@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useAppContext } from "../context/appContext";
 import supabase from "../supabaseClient";
+import Send from "../../public/send.svg";
 
 export default function MessageForm() {
   const { invitationCode, session } = useAppContext();
@@ -79,7 +80,7 @@ export default function MessageForm() {
               size="md"
               backgroundColor="White"
             >
-              <Image src="send.svg" />
+              <Image src={Send} />
             </IconButton>
           </Stack>
         </form>

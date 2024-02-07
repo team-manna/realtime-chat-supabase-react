@@ -6,7 +6,7 @@ import { useAppContext } from "../context/appContext";
 import NameForm from "./NameForm";
 export default function Header() {
   const { username, setUsername, randomUsername, session } = useAppContext();
-
+  console.log(username, "name");
   return (
     <Grid
       // templateColumns="max-content 1fr min-content"

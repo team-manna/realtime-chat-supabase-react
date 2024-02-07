@@ -39,6 +39,8 @@ export default function Messages() {
         No messages 😞
       </Box>
     );
+
+  console.log(reversed);
   return reversed.map((message, i) => {
     // let prevTime = null;
     const isYou = message.invitation_code === invitationCode;

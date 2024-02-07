@@ -6,6 +6,7 @@ import Chat from "./components/Chat";
 import { InvitationCodeForm } from "./components/InvitationCodeForm";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AppContextProvider, useAppContext } from "./context/appContext";
+import MessageForm from "./components/MessageForm";
 
 function App() {
   const { invitationCode, setInvitationCode, routeHash } = useAppContext();
@@ -15,6 +16,9 @@ function App() {
     marginLeft: "auto",
     marginRight: "auto",
     backgroundColor: "#F7F6F5",
+    height: "100vh",
+    overflow: "hidden",
+    touchAction: "none",
   };
 
   if (routeHash) {
@@ -42,17 +46,28 @@ function App() {
                 path="/"
                 element={
                   <>
-                    <Header />
+                    {/* <Header /> */}
                     <InvitationCodeForm />
                   </>
                 }
               />
               <Route
-                path="/chat"
+                path="/chat/:roomId"
                 element={
                   <>
                     <Header />
                     <Chat />
+                    <div
+                      style={{
+                        position: "fixed",
+                        bottom: "1%",
+                        width: window.innerWidth,
+                        maxWidth: "400px",
+                        padding: 20,
+                      }}
+                    >
+                      <MessageForm />
+                    </div>
                   </>
                 }
               />

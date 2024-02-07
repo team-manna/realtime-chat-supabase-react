@@ -7,7 +7,6 @@ import MessageForm from "./MessageForm";
 import { css } from "@emotion/react";
 
 export default function Chat() {
-  const [height, setHeight] = useState(window.innerHeight - 100);
   const {
     room,
     invitationCode,
@@ -18,61 +17,53 @@ export default function Chat() {
     unviewedMessageCount,
   } = useAppContext();
 
-  useEffect(() => {
-    const handleResize = () => {
-      setHeight(window.innerHeight);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const infoTitleStyle = {
+    fontSize: 13,
+    fontWeight: 400,
+    color: "#858585",
+    letterSpacing: -0.22,
+  };
 
-  const containerStyle = css`
-    max-width: 393px;
-    padding-bottom: 26px;
-  `;
-
-  const boxStyle = css`
-    background: white;
-    padding: 5;
-    overflow: auto;
-    border-radius: 41px;
-    height: ${height}px;
-  `;
-
-  const badgeStyle = css`
-    margin-left: 1;
-    font-size: 0.8em;
-    color-scheme: green;
-    display: flex;
-    border-radius: 7px;
-    padding: 3px 5px;
-    align-items: center;
-  `;
-
-  const stickyDivStyle = css`
-    position: sticky;
-    bottom: 8px;
-    float: right;
-    cursor: pointer;
-  `;
+  console.log(room?.ended_at, "room");
 
   return (
-    <Container maxW="393px" pb="26px">
-      <div>
+    <Container
+      width="100%"
+      height="100%"
+      paddingBottom={210}
+      backgroundColor={"white"}
+      borderRadius="41px"
+    >
+      {/* <div>
         <p>room: {room.id}</p>
         <p>startedAt: {room.started_at}</p>
         <p>endedAt: {room.ended_at}</p>
         <p>invitationCode: {invitationCode}</p>
-      </div>
+      </div> */}
+
       <Box
-        bg="white"
-        p="5"
+        // bg="white"
+        width="100%"
+        height="100%"
         overflow="auto"
-        borderRadius="41px"
-        height={height}
         onScroll={onScroll}
         ref={scrollRef}
+        // paddingTop="50px"
+        position="relative"
       >
+        <Box
+          width="100%"
+          alignItems="center"
+          textAlign="center"
+          position="sticky"
+          backgroundColor="white"
+          borderRadius={100}
+          padding="10px"
+          zIndex={10}
+          top={0}
+        >
+          <div style={infoTitleStyle}>대화 종료까지</div>
+        </Box>
         <Messages />
         {!isOnBottom && (
           <div
@@ -103,7 +94,6 @@ export default function Chat() {
             )}
           </div>
         )}
-        <MessageForm />
       </Box>
     </Container>
   );

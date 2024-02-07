@@ -39,11 +39,9 @@ export default function Message({ message, isYou, displayTime }) {
     display: flex;
     flex-direction: column;
     padding: 5px 17px;
-    margin-top: 10px;
+    margin-top: 5px;
     align-items: ${isYou ? "flex-end" : "flex-start"};
   `;
-  console.log(displayTime, 123);
-  // const realtime = dayjs(message.timestamp).format("HH:MM");
   return (
     <div className={containerStyle}>
       <div className={balloonStyle}>

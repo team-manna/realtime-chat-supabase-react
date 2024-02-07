@@ -6,6 +6,10 @@ html {
   height: -webkit-fill-available;
 }
 
+:root {
+  --vh: 100%;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
 }
