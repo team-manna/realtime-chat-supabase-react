@@ -5,6 +5,7 @@ import Messages from "./Messages";
 import { BsChevronDoubleDown } from "react-icons/bs";
 import MessageForm from "./MessageForm";
 import { css } from "@emotion/react";
+import supabase from "../supabaseClient";
 
 export default function Chat() {
   const {
@@ -25,6 +26,14 @@ export default function Chat() {
   };
 
   console.log(room?.ended_at, "room");
+
+  useEffect(async () => {
+    // 나와 상대방의 정보 가져오기
+    const { data, error } = await supabase
+      .from("invitation_codes")
+      .select()
+      .eq("room_id", room.id)
+  }, [room]);
 
   return (
     <Container
