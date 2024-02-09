@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AppContextProvider, useAppContext } from "../context/appContext";
 
 
-export const invitationCode = () => {
+export const InvitationCode = () => {
 
 	const globalStyle = {
     maxWidth: "400px",
