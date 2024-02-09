@@ -26,25 +26,6 @@ const AppContextProvider = ({ children }) => {
     }
   }, [messages]);
 
-  const getLocation = async () => {
-    try {
-      const res = await fetch("https://api.db-ip.com/v2/free/self");
-      const { room, error } = await res.json();
-      if (error) throw new Error(error);
-
-      setRoom(room);
-      localStorage.setItem("room", room);
-    } catch (error) {
-      console.error(
-        `error getting location from api.db-ip.com:`,
-        error.message
-      );
-    }
-  };
-
-  const randomUsername = () => {
-    return `@user${Date.now().toString().slice(-4)}`;
-  };
   const initializeUser = (session) => {
     setSession(session);
   };
@@ -84,7 +65,9 @@ const AppContextProvider = ({ children }) => {
   // 방이 바뀔 떄마다 새로운 메시지를 가져오고 구독한다.
   useEffect(() => {
     setMessages([]);
-    getMessagesAndSubscribe(room);
+    if (room) {
+      getMessagesAndSubscribe(room);
+    }
   }, [room]);
 
   useEffect(() => {
@@ -98,9 +81,9 @@ const AppContextProvider = ({ children }) => {
   }, [newIncomingMessageTrigger]);
 
   const handleNewMessage = (payload) => {
-      setMessages((prevMessages) => [payload.new, ...prevMessages]);
-      //* needed to trigger react state because I need access to the invitationCode state
-      setNewIncomingMessageTrigger(payload.new);
+    setMessages((prevMessages) => [payload.new, ...prevMessages]);
+    //* needed to trigger react state because I need access to the invitationCode state
+    setNewIncomingMessageTrigger(payload.new);
   };
 
   const getInitialMessages = async (room) => {
@@ -195,7 +178,6 @@ const AppContextProvider = ({ children }) => {
         setInvitationCode,
         room,
         setRoom,
-        randomUsername,
         routeHash,
         scrollRef,
         onScroll,
