@@ -41,11 +41,14 @@ export const Start = () => {
 				<Container
 					fontWeight='500'
 					fontSize='28'
+					padding="0"
+					marginBottom="20%"
 				>
 					<Text>몽글몽글 피어나는<br/>대화의 즐거움 💭</Text>
 				</Container>
 				<Container 
 					textAlign="center"
+					marginBottom="30%"
 				>
 					<Image src="start.svg" />
 				</Container>
@@ -55,11 +58,12 @@ export const Start = () => {
 					backgroundColor="black"
 					color="white"
 					size="lg"
-					padding="10"
 					width="350px"
 					borderRadius="23px"
+					position="relative" 
+					bottom="5"
 				>
-					초대 코드 입력
+					초대코드 입력
 				</Button>
 			</Container>
 		</Container>
