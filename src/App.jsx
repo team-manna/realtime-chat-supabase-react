@@ -4,6 +4,7 @@ import "./App.css";
 import Header from "./layout/Header";
 import Chat from "./components/Chat";
 import { InvitationCodeForm } from "./components/InvitationCodeForm";
+import { Start } from "./pages/Start";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AppContextProvider, useAppContext } from "./context/appContext";
 import MessageForm from "./components/MessageForm";
@@ -47,7 +48,7 @@ function App() {
                 element={
                   <>
                     {/* <Header /> */}
-                    <InvitationCodeForm />
+                    <Start />
                   </>
                 }
               />
