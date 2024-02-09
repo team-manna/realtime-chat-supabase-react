@@ -23,9 +23,9 @@ export const Rules = () => {
 				fontFamily="BlackHanSans"
 				fontWeight="900"
 				fontSize="21"
-				marginBottom="15%"
+				marginBottom="20%"
 			>
-				<Text>mongle</Text>
+				<Text>mongle.</Text>
 			</Container>
 
 			<Container
@@ -43,7 +43,11 @@ export const Rules = () => {
 					fontWeight='500'
           marginBottom="30%"
 				>
-					<Text>몽글 이용 가이드 💭</Text>
+					<Text
+            margin="0"
+          >
+            몽글 이용 가이드 💭
+          </Text>
 				</Container>
         <Container
           marginBottom="70%"

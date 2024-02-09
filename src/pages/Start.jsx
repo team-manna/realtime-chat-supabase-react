@@ -26,7 +26,7 @@ export const Start = () => {
 				fontSize="21"
 				marginBottom="15%"
 			>
-				<p>mongle</p>
+				<p>mongle.</p>
 			</Container>
 
 			<Container

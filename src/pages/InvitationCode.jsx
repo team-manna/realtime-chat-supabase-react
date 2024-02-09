@@ -25,7 +25,7 @@ export const invitationCode = () => {
 				fontSize="21"
 				marginBottom="15%"
 			>
-				<Text>mongle</Text>
+				<Text>mongle.</Text>
 			</Container>
 
 			<Container
