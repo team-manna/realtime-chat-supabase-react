@@ -15,7 +15,7 @@ export const Start = () => {
     height: "100vh",
     overflow: "hidden",
     touchAction: "none",
-  };
+  	};
 
 	return(
 		<Container style={globalStyle}>
@@ -25,16 +25,19 @@ export const Start = () => {
 				fontWeight="900"
 				fontSize="21"
 				marginBottom="15%"
+				marginTop="5%"
 			>
-				<p>mongle.</p>
+				<Text>mongle.</Text>
 			</Container>
 
 			<Container
 				paddingLeft="15%"
+				height="70vh"
 			>
 				<Text
 					color="#868686"
 					fontWeight='300'
+					marginBottom="2%"
 				>
 					나만의 대화메이트를 찾아볼까요?
 				</Text>
@@ -48,7 +51,6 @@ export const Start = () => {
 				</Container>
 				<Container 
 					textAlign="center"
-					marginBottom="30%"
 				>
 					<Image src="start.svg" />
 				</Container>
@@ -61,7 +63,6 @@ export const Start = () => {
 					width="350px"
 					borderRadius="23px"
 					position="relative" 
-					bottom="5"
 				>
 					초대코드 입력
 				</Button>
