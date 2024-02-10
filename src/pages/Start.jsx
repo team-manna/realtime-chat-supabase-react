@@ -1,6 +1,6 @@
 import { Container, Button, Image, Text } from "@chakra-ui/react";
 
-export const Start = ({nextPage}) => {
+export const Start = ({nextPage, buttonStyle}) => {
 
 	return(
 		<Container>
@@ -42,11 +42,7 @@ export const Start = ({nextPage}) => {
 			</Container>
 			<Container>
 				<Button
-					backgroundColor="black"
-					color="white"
-					size="lg"
-					width="100%"
-					borderRadius="23px"
+					style={buttonStyle}
 					onClick={nextPage}
 				>
 					초대코드 입력
