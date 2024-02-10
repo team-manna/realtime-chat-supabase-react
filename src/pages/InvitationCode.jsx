@@ -1,55 +1,46 @@
-import { Button, Container, Text } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AppContextProvider, useAppContext } from "../context/appContext";
+import {
+  Button,
+  PinInput,
+  PinInputField,
+  Container,
+  Text,
+} from '@chakra-ui/react';
+import { useState } from 'react';
 
+export const InvitationCode = ({ nextPage, style }) => {
+  const [code, setCode] = useState('......');
+  const isButtonDisabled = code.length < 6;
 
-export const InvitationCode = () => {
-
-	const globalStyle = {
-    maxWidth: "400px",
-    marginLeft: "auto",
-    marginRight: "auto",
-    backgroundColor: "#F9F9F7",
-    height: "100vh",
-    overflow: "hidden",
-    touchAction: "none",
+  // 입력값이 변경되었을 때 호출되는 함수
+  const handleInputChange = e => {
+    const input = e.target.value;
+    // 코드가 숫자이고 6자리를 초과하지 않도록 제한
+    if (/^\d*$/.test(input) && input.length <= 6) {
+      setCode(input);
+    }
   };
 
-	return(
-		<Container style={globalStyle}>
-			<Container
-				textAlign="center"
-				fontFamily="BlackHanSans"
-				fontWeight="900"
-				fontSize="21"
-				marginBottom="15%"
-			>
-				<Text>mongle.</Text>
-			</Container>
+  return (
+    <Container>
+      <Container style={style.headerStyle}>
+        <Text>mongle.</Text>
+      </Container>
 
-			<Container
-				paddingLeft="15%"
-			>
-        <Text
-          fontWeight="600"
-        >
-          초대 코드를 입력하세요
-        </Text>
-			</Container>
-      
-			<Container textAlign="center">
-				<Button
-					backgroundColor="black"
-					color="white"
-					size="lg"
-					padding="10"
-					width="350px"
-					borderRadius="23px"
-				>
-					입장하기
-				</Button>
-			</Container>
-		</Container>
-	);
-}
+      <Container style={style.containerStyle}>
+        <Text style={style.titleStyle}>초대 코드를 입력하세요</Text>
+        <PinInput variant="unstyled">
+          <PinInputField />
+          <PinInputField />
+          <PinInputField />
+          <PinInputField />
+          <PinInputField />
+          <PinInputField />
+        </PinInput>
+      </Container>
+
+      <Container textAlign="center">
+        <Button style={style.buttonStyle}>입장하기</Button>
+      </Container>
+    </Container>
+  );
+};
