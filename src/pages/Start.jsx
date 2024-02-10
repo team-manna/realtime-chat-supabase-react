@@ -2,18 +2,8 @@ import { Container, Button, Image, Text } from "@chakra-ui/react";
 
 export const Start = ({nextPage}) => {
 
-	const globalStyle = {
-    maxWidth: "400px",
-    marginLeft: "auto",
-    marginRight: "auto",
-    backgroundColor: "#F9F9F7",
-    height: "100vh",
-    overflow: "hidden",
-    touchAction: "none",
-  	};
-
 	return(
-		<Container style={globalStyle}>
+		<Container>
 			<Container
 				textAlign="center"
 				fontFamily="BlackHanSans"
