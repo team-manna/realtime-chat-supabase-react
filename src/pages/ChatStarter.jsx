@@ -63,7 +63,7 @@ export const ChatStarter = () => {
         <InvitationCode nextPage={nextPage} style={style} />
       )}
       {currentPage === 'rules' && <Rules nextPage={nextPage} style={style} />}
-      {currentPage === 'end' && <End />}
+      {currentPage === 'end' && <End style={style} />}
     </Container>
   );
 };
