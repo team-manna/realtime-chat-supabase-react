@@ -7,10 +7,7 @@ import { InvitationCodeForm } from "./components/InvitationCodeForm";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AppContextProvider, useAppContext } from "./context/appContext";
 import MessageForm from "./components/MessageForm";
-import { Start } from "./pages/Start";
-import { InvitationCode } from "./pages/InvitationCode";
-import { Rules } from "./pages/Rules";
-import { End } from "./pages/End";
+import { ChatStarter } from "./pages/ChatStarter";
 
 function App() {
   const { invitationCode, setInvitationCode, routeHash } = useAppContext();
@@ -51,7 +48,7 @@ function App() {
                 element={
                   <>
                     {/* <Header /> */}
-                    <Start />
+                    <ChatStarter />
                   </>
                 }
               />
