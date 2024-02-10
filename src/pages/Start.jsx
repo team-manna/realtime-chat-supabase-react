@@ -1,11 +1,6 @@
 import { Container, Button, Image, Text } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AppContextProvider, useAppContext } from "../context/appContext";
-import StartSvg from "../../public/start.svg";
 
-
-export const Start = () => {
+export const Start = ({nextPage}) => {
 
 	const globalStyle = {
     maxWidth: "400px",
@@ -55,19 +50,18 @@ export const Start = () => {
 					<Image src="start.svg" />
 				</Container>
 			</Container>
-			<Container textAlign="center">
+			<Container>
 				<Button
 					backgroundColor="black"
 					color="white"
 					size="lg"
-					width="350px"
+					width="100%"
 					borderRadius="23px"
-					position="relative" 
+					onClick={nextPage}
 				>
 					초대코드 입력
 				</Button>
 			</Container>
-		</Container>
-        
+		</Container>  
 	);
 }
