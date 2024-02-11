@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Input,
   Stack,
@@ -7,48 +7,48 @@ import {
   Box,
   Container,
   Image,
-} from "@chakra-ui/react";
-import { useAppContext } from "../context/appContext";
-import supabase from "../supabaseClient";
-import Send from "../../public/send.svg";
+} from '@chakra-ui/react';
+import { useAppContext } from '../context/appContext';
+import supabase from '../supabaseClient';
+import Send from '../../public/send.svg';
 
 export default function MessageForm() {
   const { invitationCode, session, room } = useAppContext();
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const toast = useToast();
   const [isSending, setIsSending] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setIsSending(true);
     if (!message) return;
 
-    setMessage("");
+    setMessage('');
 
     try {
-      const { error } = await supabase.from("messages").insert([
+      const { error } = await supabase.from('messages').insert([
         {
           text: message,
           invitation_code: invitationCode,
           is_authenticated: session ? true : false,
-          room_id: room.id,
+          room_id: room,
         },
       ]);
 
       if (error) {
         console.error(error.message);
         toast({
-          title: "Error sending",
+          title: 'Error sending',
           description: error.message,
-          status: "error",
+          status: 'error',
           duration: 9000,
           isClosable: true,
         });
         return;
       }
-      console.log("Sucsessfully sent!");
+      console.log('Sucsessfully sent!');
     } catch (error) {
-      console.log("error sending message:", error);
+      console.log('error sending message:', error);
     } finally {
       setIsSending(false);
     }
@@ -63,7 +63,7 @@ export default function MessageForm() {
               name="message"
               placeholder="메시지 보내기"
               style={{ fontSize: 14, fontWeight: 200 }}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={e => setMessage(e.target.value)}
               value={message}
               bg="#F6F6F6"
               border="none"
@@ -79,8 +79,7 @@ export default function MessageForm() {
               disabled={!message}
               isLoading={isSending}
               size="md"
-              backgroundColor="White"
-            >
+              backgroundColor="White">
               <Image src={Send} />
             </IconButton>
           </Stack>

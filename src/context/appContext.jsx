@@ -1,23 +1,25 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
-import supabase from "../supabaseClient";
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import supabase from '../supabaseClient';
 
 const AppContext = createContext({});
 
 const AppContextProvider = ({ children }) => {
   let myChannel = null;
-  const [invitationCode, setInvitationCode] = useState("");
+  const [invitationCode, setInvitationCode] = useState(
+    sessionStorage.getItem('@CODE'),
+  );
   const [session, setSession] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [loadingInitial, setLoadingInitial] = useState(true);
-  const [routeHash, setRouteHash] = useState("");
+  const [routeHash, setRouteHash] = useState('');
   const [isOnBottom, setIsOnBottom] = useState(false);
   const [newIncomingMessageTrigger, setNewIncomingMessageTrigger] =
     useState(null);
   const [unviewedMessageCount, setUnviewedMessageCount] = useState(0);
   const [room, setRoom] = useState(null);
   const [isInitialLoad, setIsInitialLoad] = useState(false);
-
+  const [allData, setAllData] = useState({});
   useEffect(() => {
     // Effect to scroll to bottom on initial message load
     if (isInitialLoad) {
@@ -26,7 +28,7 @@ const AppContextProvider = ({ children }) => {
     }
   }, [messages]);
 
-  const initializeUser = (session) => {
+  const initializeUser = session => {
     setSession(session);
   };
 
@@ -35,14 +37,13 @@ const AppContextProvider = ({ children }) => {
       initializeUser(session);
     });
 
-    const storedRoomId = localStorage.getItem("room");
-    if (storedRoomId && storedRoomId !== "undefined")
-      setRoom(storedRoomId);
+    const storedRoomId = localStorage.getItem('room');
+    if (storedRoomId && storedRoomId !== 'undefined') setRoom(storedRoomId);
 
     const {
       data: { subscription: authSubscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      console.log("onAuthStateChange", { _event, session });
+      console.log('onAuthStateChange', { _event, session });
       initializeUser(session);
     });
 
@@ -76,25 +77,25 @@ const AppContextProvider = ({ children }) => {
     if (newIncomingMessageTrigger.invitationCode === invitationCode) {
       scrollToBottom();
     } else {
-      setUnviewedMessageCount((prevCount) => prevCount + 1);
+      setUnviewedMessageCount(prevCount => prevCount + 1);
     }
   }, [newIncomingMessageTrigger]);
 
-  const handleNewMessage = (payload) => {
-    setMessages((prevMessages) => [payload.new, ...prevMessages]);
+  const handleNewMessage = payload => {
+    setMessages(prevMessages => [payload.new, ...prevMessages]);
     //* needed to trigger react state because I need access to the invitationCode state
     setNewIncomingMessageTrigger(payload.new);
   };
 
-  const getInitialMessages = async (room) => {
+  const getInitialMessages = async room => {
     if (messages.length) return;
 
     const { data, error } = await supabase
-      .from("messages")
+      .from('messages')
       .select()
-      .filter("room_id", "eq", room.id)
+      .filter('room_id', 'eq', room)
       .range(0, 49)
-      .order("id", { ascending: false });
+      .order('id', { ascending: false });
     // console.log(`data`, data);
 
     setLoadingInitial(false);
@@ -108,8 +109,8 @@ const AppContextProvider = ({ children }) => {
     // scrollToBottom(); // not sure why this stopped working, meanwhile using useEffect that's listening to messages and isInitialLoad state.
   };
 
-  const getMessagesAndSubscribe = async (room) => {
-    setError("");
+  const getMessagesAndSubscribe = async room => {
+    setError('');
 
     await getInitialMessages(room);
 
@@ -121,13 +122,18 @@ const AppContextProvider = ({ children }) => {
       // })
       // .subscribe();
       myChannel = supabase
-        .channel("custom-all-channel")
+        .channel('custom-all-channel')
         .on(
-          "postgres_changes",
-          { event: "*", schema: "public", table: "messages", filter: `room_id=eq.${room.id}` },
-          (payload) => {
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'messages',
+            filter: `room_id=eq.${room}`,
+          },
+          payload => {
             handleNewMessage(payload);
-          }
+          },
         )
         .subscribe();
     }
@@ -146,18 +152,18 @@ const AppContextProvider = ({ children }) => {
     if (target.scrollTop === 0) {
       // console.log("messages.length :>> ", messages.length);
       const { data, error } = await supabase
-        .from("messages")
-        .select('invitation_codes( invitation_code, room_id, username )')
-        .filter("room_id", "eq", room)
+        .from('messages')
+        .select('invitation_codes( invitation_code, room_id)')
+        .filter('room_id', 'eq', room)
         .range(messages.length, messages.length + 49)
-        .order("id", { ascending: false });
+        .order('id', { ascending: false });
 
       if (error) {
         setError(error.message);
         return;
       }
       target.scrollTop = 1;
-      setMessages((prevMessages) => [...prevMessages, ...data]);
+      // setMessages(prevMessages => [...prevMessages, ...data]);
     }
   };
 
@@ -185,8 +191,9 @@ const AppContextProvider = ({ children }) => {
         isOnBottom,
         unviewedMessageCount,
         session,
-      }}
-    >
+        allData,
+        setAllData,
+      }}>
       {children}
     </AppContext.Provider>
   );

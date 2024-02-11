@@ -13,37 +13,35 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 export const InvitationCode = ({ nextPage, style }) => {
   const [input, setInput] = useState('......');
-  const { invitationCode, setInvitationCode, room, setRoom } = useAppContext();
+  const { invitationCode, setInvitationCode, room, setRoom, setAllData } =
+    useAppContext();
   const [isChecked, setIsChecked] = useState(false);
 
   const navigate = useNavigate();
 
   const checkInvitationCode = async e => {
     e.preventDefault();
-    const { data, error, status } = await supabase
+    const { data, error } = await supabase
       .from('invitation_codes')
-      .select('rooms(id, started_at, ended_at)')
+      .select()
       .eq('invitation_code', input)
       .maybeSingle();
     if (error) {
       console.error(error);
     } else if (!data) {
-      alert('코드를 정확히 기입해 주세요 !');
+      return alert('코드를 정확히 기입해 주세요 !');
     } else {
-      console.log(`디버그: ${input}`);
-      console.log(`invitation code 디버그: ${JSON.stringify(data)}`);
-      setRoom(data.rooms);
-      setInvitationCode(input);
       console.log(data);
-      sessionStorage.setItem('@ROOMID', data.rooms.id);
-      sessionStorage.setItem('@START', data.rooms.started_at);
-      sessionStorage.setItem('@END', data.rooms.ended_at);
-      navigate(`/chat/${data.rooms.id}`);
+      setRoom(data.room_id);
+      setInvitationCode(input);
+      setAllData(data);
+      sessionStorage.setItem('@CODE', data.invitation_code);
+      navigate(`/chat`);
     }
   };
-  useEffect(() => {
-    console.log(input);
-  }, [input]);
+  // useEffect(() => {
+  //   console.log(input);
+  // }, [input]);
 
   return (
     <Container>

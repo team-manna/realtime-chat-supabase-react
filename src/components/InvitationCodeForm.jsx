@@ -1,42 +1,43 @@
-import { useColorMode, useColorModeValue, IconButton } from "@chakra-ui/react";
-import { css } from "@emotion/react";
-import { useState } from "react";
-import { FaMoon, FaSun } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useAppContext } from "../context/appContext";
-import supabase from "../supabaseClient";
+import { useColorMode, useColorModeValue, IconButton } from '@chakra-ui/react';
+import { css } from '@emotion/react';
+import { useState } from 'react';
+import { FaMoon, FaSun } from 'react-icons/fa';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAppContext } from '../context/appContext';
+import supabase from '../supabaseClient';
 
-export const InvitationCodeForm = (props) => {
-  const [input, setInput] = useState("");
+export const InvitationCodeForm = props => {
+  const [input, setInput] = useState('');
   const { invitationCode, setInvitationCode, room, setRoom } = useAppContext();
   const navigate = useNavigate();
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     setInput(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const { data, error, status } = await supabase
-      .from("invitation_codes")
-      .select("rooms(id, started_at, ended_at)")
-      .eq("invitation_code", input)
+      .from('invitation_codes')
+      .select()
+      .eq('invitation_code', input)
       .maybeSingle();
     if (error) {
       console.error(error);
     } else if (!data) {
-      console.log("빈 값");
-      alert("코드를 정확히 기입해 주세요");
+      console.log('빈 값');
+      alert('코드를 정확히 기입해 주세요');
     } else {
       console.log(`디버그: ${input}`);
       console.log(`invitation code 디버그: ${JSON.stringify(data)}`);
       setRoom(data.rooms);
       setInvitationCode(input);
       console.log(data);
-      sessionStorage.setItem("@ROOMID", data.rooms.id);
-      sessionStorage.setItem("@START", data.rooms.started_at);
-      sessionStorage.setItem("@END", data.rooms.ended_at);
-      navigate(`/chat/${data.rooms.id}`);
+      sessionStorage.setItem('@ROOMID', data.rooms.id);
+      sessionStorage.setItem('@START', data.rooms.started_at);
+      sessionStorage.setItem('@END', data.rooms.ended_at);
+      // navigate(`/chat/${data.rooms.id}`);
+      //* 4mNyLD 초대코드
     }
   };
 
@@ -56,8 +57,7 @@ export const InvitationCodeForm = (props) => {
         border-radius: 10px;
         width: 300px;
         height: 500px;
-      `}
-    >
+      `}>
       <h1>
         {invitationCode} {room?.id}
       </h1>

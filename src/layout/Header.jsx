@@ -1,17 +1,14 @@
-import { Box, Button, Grid, GridItem, Image } from "@chakra-ui/react";
-import { FaGithub } from "react-icons/fa";
-import supabase from "../supabaseClient";
+import { Box, Button, Grid, GridItem, Image } from '@chakra-ui/react';
+import { FaGithub } from 'react-icons/fa';
+import supabase from '../supabaseClient';
 
-import { useAppContext } from "../context/appContext";
-import NameForm from "./NameForm";
+import { useAppContext } from '../context/appContext';
+import NameForm from './NameForm';
 export default function Header() {
-  const { username, setUsername, randomUsername, session } = useAppContext();
-  console.log(username, "name");
+  const { session, allData } = useAppContext();
+  console.log(allData, 22);
   return (
     <Grid
-      // templateColumns="max-content 1fr min-content"
-      // justifyItems="center"
-      // alignItems="center"
       display="flex"
       flexDir="row"
       justifyContent="space-between"
@@ -22,18 +19,16 @@ export default function Header() {
       ml="5"
       mr="5"
       mt="5"
-      mb="5"
-    >
+      mb="5">
       <GridItem
         justifySelf="start"
         m="2"
         flexDir="row"
         display="flex"
-        alignItems="center"
-      >
+        alignItems="center">
         <Image src="/female.svg" height="50px" ml="2" />
         <Box display="flex" flexDir="column" ml="15">
-          몽글
+          {allData?.username}
           <Button variant="link" size="xs">
             프로필 보기 <Image src="leftArrow.svg" ml="2" />
           </Button>
