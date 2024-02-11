@@ -20,7 +20,7 @@ export const ChatStarter = () => {
       textAlign: 'center',
       fontWeight: '400',
       fontSize: '21',
-      marginBottom: '15%',
+      marginBottom: '30%',
       marginTop: '5%',
     },
     subTitleStyle: {
@@ -37,20 +37,19 @@ export const ChatStarter = () => {
       marginBottom: '40%',
     },
     containerStyle: {
-      paddingLeft: '15%',
-      height: '80vh',
+      height: '70vh',
     },
   };
 
   const nextPage = () => {
     switch (currentPage) {
       case 'start':
-        setCurrentPage('invitation');
-        break;
-      case 'invitation':
         setCurrentPage('rules');
         break;
       case 'rules':
+        setCurrentPage('invitation');
+        break;
+      case 'invitation':
         setCurrentPage('end');
         break;
       default:
@@ -63,8 +62,8 @@ export const ChatStarter = () => {
       {currentPage === 'invitation' && (
         <InvitationCode nextPage={nextPage} style={style} />
       )}
-      {currentPage === 'rules' && <Rules nextPage={nextPage} />}
-      {currentPage === 'end' && <End />}
+      {currentPage === 'rules' && <Rules nextPage={nextPage} style={style} />}
+      {currentPage === 'end' && <End style={style} />}
     </Container>
   );
 };
