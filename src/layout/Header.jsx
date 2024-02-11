@@ -1,12 +1,15 @@
 import { Box, Button, Grid, GridItem, Image } from '@chakra-ui/react';
 import { FaGithub } from 'react-icons/fa';
 import supabase from '../supabaseClient';
-
+import { useState } from 'react';
 import { useAppContext } from '../context/appContext';
 import NameForm from './NameForm';
-export default function Header() {
+export default function Header({ modal, setModal }) {
   const { session, allData } = useAppContext();
-  console.log(allData, 22);
+  const openModal = () => {
+    setModal(true);
+    console.log(modal);
+  };
   return (
     <Grid
       display="flex"
@@ -29,7 +32,7 @@ export default function Header() {
         <Image src="/female.svg" height="50px" ml="2" />
         <Box display="flex" flexDir="column" ml="15">
           {allData?.username}
-          <Button variant="link" size="xs">
+          <Button variant="link" size="xs" onClick={openModal}>
             프로필 보기 <Image src="leftArrow.svg" ml="2" />
           </Button>
         </Box>

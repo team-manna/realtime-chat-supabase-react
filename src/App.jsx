@@ -1,8 +1,9 @@
 import { ChakraProvider, Box, theme } from '@chakra-ui/react';
-// import { ColorModeSwitcher } from "./components/ColorModeSwitcher";
+import { useState, Fragment } from 'react';
 import './App.css';
 import Header from './layout/Header';
 import Chat from './components/Chat';
+import Profile from './components/Profile';
 import { InvitationCodeForm } from './components/InvitationCodeForm';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AppContextProvider, useAppContext } from './context/appContext';
@@ -11,9 +12,10 @@ import { ChatStarter } from './pages/ChatStarter';
 
 function App() {
   const { invitationCode, setInvitationCode, routeHash } = useAppContext();
+  const [modal, setModal] = useState(false);
 
   const globalStyle = {
-    maxWidth: '400px',
+    maxWidth: '410px',
     marginLeft: 'auto',
     marginRight: 'auto',
     backgroundColor: '#F7F6F5',
@@ -36,6 +38,7 @@ function App() {
         </div>
       );
   }
+
   return (
     <ChakraProvider theme={theme}>
       <AppContextProvider>
@@ -47,7 +50,6 @@ function App() {
                 path="/"
                 element={
                   <>
-                    {/* <Header /> */}
                     <ChatStarter />
                   </>
                 }
@@ -55,8 +57,9 @@ function App() {
               <Route
                 path="/chat"
                 element={
-                  <>
-                    <Header />
+                  <div style={{ position: 'relative' }}>
+                    {modal && <Profile />}
+                    <Header modal={modal} setModal={setModal} />
                     <Chat />
                     <div
                       style={{
@@ -68,7 +71,7 @@ function App() {
                       }}>
                       <MessageForm />
                     </div>
-                  </>
+                  </div>
                 }
               />
               <Route path="*" element={<p>Not found</p>} />
