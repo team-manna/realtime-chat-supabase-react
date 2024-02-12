@@ -34,7 +34,7 @@ export const ChatStarter = () => {
       fontWeight: '700',
       fontSize: '28px',
       padding: '0',
-      marginBottom: '40%',
+      marginBottom: '30%',
     },
     containerStyle: {
       height: '70vh',

@@ -57,7 +57,10 @@ export const InvitationCode = ({ nextPage, style }) => {
         <Text>mongle.</Text>
       </Container>
 
-      <Container style={style.containerStyle}>
+      <Container
+        style={
+          (style.containerStyle, { textAlign: 'center', marginBottom: '47vh' })
+        }>
         <Text style={style.titleStyle}>초대 코드를 입력하세요</Text>
         <PinInput
           otp

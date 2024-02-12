@@ -20,7 +20,7 @@ export const Start = ({ nextPage, style }) => {
       </Container>
       <Container>
         <Button style={style.buttonStyle} onClick={nextPage}>
-          참여하러 가기
+          입장하기
         </Button>
       </Container>
     </Container>
