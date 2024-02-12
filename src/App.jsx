@@ -9,9 +9,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AppContextProvider, useAppContext } from './context/appContext';
 import MessageForm from './components/MessageForm';
 import { ChatStarter } from './pages/ChatStarter';
+import { End } from './pages/End';
 
 function App() {
-  const { invitationCode, setInvitationCode, routeHash } = useAppContext();
+  const { invitationCode, setInvitationCode, routeHash, isTime } =
+    useAppContext();
   const [modal, setModal] = useState(false);
 
   const globalStyle = {
@@ -57,8 +59,9 @@ function App() {
               <Route
                 path="/chat"
                 element={
-                  <div style={{ position: 'relative' }}>
-                    {modal && <Profile />}
+                  // <div style={{ position: 'relative' }}>
+                  <>
+                    {modal && <Profile setModal={setModal} />}
                     <Header modal={modal} setModal={setModal} />
                     <Chat />
                     <div
@@ -71,9 +74,11 @@ function App() {
                       }}>
                       <MessageForm />
                     </div>
-                  </div>
+                  </>
+                  // </div>
                 }
               />
+              <Route path="/end" element={<End />} />
               <Route path="*" element={<p>Not found</p>} />
             </Routes>
           </Router>

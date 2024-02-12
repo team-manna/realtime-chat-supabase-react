@@ -8,6 +8,9 @@ const AppContextProvider = ({ children }) => {
   const [invitationCode, setInvitationCode] = useState(
     sessionStorage.getItem('@CODE'),
   );
+  // 상대방 정보
+  const [myInfo, setMyInfo] = useState({});
+  const [otherInfo, setOtherInfo] = useState(null);
   const [session, setSession] = useState(null);
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState('');
@@ -17,9 +20,10 @@ const AppContextProvider = ({ children }) => {
   const [newIncomingMessageTrigger, setNewIncomingMessageTrigger] =
     useState(null);
   const [unviewedMessageCount, setUnviewedMessageCount] = useState(0);
-  const [room, setRoom] = useState(null);
+  const [room, setRoom] = useState(sessionStorage.getItem('@ROOMID'));
   const [isInitialLoad, setIsInitialLoad] = useState(false);
-  const [allData, setAllData] = useState({});
+  //* 채팅 시간 b : 시작전, i: 진행중, e: 끝
+  const [isTime, setIsTime] = useState('');
   useEffect(() => {
     // Effect to scroll to bottom on initial message load
     if (isInitialLoad) {
@@ -62,6 +66,22 @@ const AppContextProvider = ({ children }) => {
       authSubscription.unsubscribe();
     };
   }, []);
+  // 상대방의 정보 가져오기
+  useEffect(() => {
+    const getAllData = async () => {
+      const { data, error } = await supabase
+        .from('invitation_codes')
+        .select()
+        .eq('room_id', Number(room));
+      console.log(data, '하이');
+      const otherData = data.filter(
+        item => item.invitation_code !== invitationCode,
+      );
+      // console.log(otherData[0], '상대정보');
+      setOtherInfo(otherData[0]);
+    };
+    getAllData();
+  }, [room]);
 
   // 방이 바뀔 떄마다 새로운 메시지를 가져오고 구독한다.
   useEffect(() => {
@@ -191,8 +211,12 @@ const AppContextProvider = ({ children }) => {
         isOnBottom,
         unviewedMessageCount,
         session,
-        allData,
-        setAllData,
+        myInfo,
+        setMyInfo,
+        otherInfo,
+        setOtherInfo,
+        isTime,
+        setIsTime,
       }}>
       {children}
     </AppContext.Provider>

@@ -13,7 +13,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 export const InvitationCode = ({ nextPage, style }) => {
   const [input, setInput] = useState('......');
-  const { invitationCode, setInvitationCode, room, setRoom, setAllData } =
+  const { invitationCode, setInvitationCode, room, setRoom, setMyInfo } =
     useAppContext();
   const [isChecked, setIsChecked] = useState(false);
 
@@ -31,11 +31,12 @@ export const InvitationCode = ({ nextPage, style }) => {
     } else if (!data) {
       return alert('코드를 정확히 기입해 주세요 !');
     } else {
-      console.log(data);
       setRoom(data.room_id);
       setInvitationCode(input);
-      setAllData(data);
+      setMyInfo(data);
       sessionStorage.setItem('@CODE', data.invitation_code);
+      sessionStorage.setItem('@ROOMID', data.room_id);
+      sessionStorage.setItem('@START', data.created_at);
       navigate(`/chat`);
     }
   };
