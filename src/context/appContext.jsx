@@ -183,7 +183,7 @@ const AppContextProvider = ({ children }) => {
         return;
       }
       target.scrollTop = 1;
-      // setMessages(prevMessages => [...prevMessages, ...data]);
+      setMessages(prevMessages => [...prevMessages, ...data]);
     }
   };
 
@@ -217,6 +217,7 @@ const AppContextProvider = ({ children }) => {
         setOtherInfo,
         isTime,
         setIsTime,
+        getInitialMessages,
       }}>
       {children}
     </AppContext.Provider>

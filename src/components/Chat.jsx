@@ -63,8 +63,10 @@ export default function Chat() {
       setIsTime('I');
     } else {
       setIsTime('E');
+      setChatTimeText('대화 종료 까지');
+      setTimeLeft(0);
     }
-  }, []);
+  }, [timeLeft]);
   //* 타이머
   useEffect(() => {
     const timer = setInterval(() => {

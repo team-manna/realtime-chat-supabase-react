@@ -13,8 +13,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 export const InvitationCode = ({ nextPage, style }) => {
   const [input, setInput] = useState('......');
-  const { invitationCode, setInvitationCode, room, setRoom, setMyInfo } =
-    useAppContext();
+  const {
+    invitationCode,
+    setInvitationCode,
+    room,
+    setRoom,
+    setMyInfo,
+    getInitialMessages,
+  } = useAppContext();
   const [isChecked, setIsChecked] = useState(false);
 
   const navigate = useNavigate();
@@ -37,6 +43,7 @@ export const InvitationCode = ({ nextPage, style }) => {
       sessionStorage.setItem('@CODE', data.invitation_code);
       sessionStorage.setItem('@ROOMID', data.room_id);
       sessionStorage.setItem('@START', data.created_at);
+      getInitialMessages(data.room_id);
       navigate(`/chat`);
     }
   };

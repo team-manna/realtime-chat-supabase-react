@@ -78,7 +78,14 @@ function App() {
                   // </div>
                 }
               />
-              <Route path="/end" element={<End />} />
+              <Route
+                path="/end"
+                element={
+                  <>
+                    <End />
+                  </>
+                }
+              />
               <Route path="*" element={<p>Not found</p>} />
             </Routes>
           </Router>
