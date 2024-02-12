@@ -1,10 +1,10 @@
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
-import { MdVerified } from "react-icons/md";
-import { truncateText } from "../utils";
+import { MdVerified } from 'react-icons/md';
+import { truncateText } from '../utils';
 
-import { css } from "@emotion/css";
+import { css } from '@emotion/css';
 
 export default function Message({ message, isYou, displayTime }) {
   const timeTextStyle = css`
@@ -14,7 +14,7 @@ export default function Message({ message, isYou, displayTime }) {
     line-height: 36.8px;
     font-weight: 300;
     font-family: Pretendard;
-    color: "#bdbdbd";
+    color: '#bdbdbd';
     text-align: right;
     padding-right: 10px;
   `;
@@ -26,21 +26,22 @@ export default function Message({ message, isYou, displayTime }) {
     border-radius: 22px;
     overflow: hidden;
     display: flex;
-    justify-content: ${isYou ? "flex-end" : "flex-start"};
-    align-items: ${isYou ? "flex-end" : "flex-start"};
+    justify-content: ${isYou ? 'flex-end' : 'flex-start'};
+    align-items: ${isYou ? 'flex-end' : 'flex-start'};
   `;
 
   const balloonStyle = css`
     position: relative;
     border-radius: 22px;
-    background-color: ${isYou ? "#8C7E71" : "#F6F6F6"};
+    background-color: ${isYou ? '#8C7E71' : '#F6F6F6'};
     height: auto;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     padding: 5px 17px;
     margin-top: 5px;
-    align-items: ${isYou ? "flex-end" : "flex-start"};
+    align-items: ${isYou ? 'flex-end' : 'flex-start'};
+    color: ${isYou ? '#F6F6F6' : 'black'};
   `;
   return (
     <div className={containerStyle}>
@@ -50,7 +51,7 @@ export default function Message({ message, isYou, displayTime }) {
           {message.is_authenticated && (
             <MdVerified
               color="#1d9bf0"
-              style={{ display: "inline", marginRight: "5px" }}
+              style={{ display: 'inline', marginRight: '5px' }}
             />
           )}
         </div>
@@ -58,7 +59,7 @@ export default function Message({ message, isYou, displayTime }) {
       </div>
 
       <div className={timeTextStyle}>
-        {dayjs(message.timestamp).format("HH:MM")}
+        {dayjs(message.timestamp).format('HH:MM')}
       </div>
     </div>
   );
